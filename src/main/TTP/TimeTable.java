@@ -31,4 +31,8 @@ public class TimeTable {
 
     }
 
+    public void getTimeTable(){
+
+    }
+
 }
