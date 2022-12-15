@@ -9,7 +9,7 @@ public class TimeTable {
     public void getNextDay(){
 
     }
-
+    // hallo
     public void setLectureUnit(){
 
     }
