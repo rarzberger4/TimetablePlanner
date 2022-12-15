@@ -1,3 +1,5 @@
+package TTP;
+
 import java.util.Date;
 
 public class TimeTable {
