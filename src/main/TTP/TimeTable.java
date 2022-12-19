@@ -1,18 +1,22 @@
 package TTP;
 
 import java.util.Calendar;
-import java.util.Date;
+import java.time;
 
 public class TimeTable {
-    private Date startDate = new Date(2022, Calendar.SEPTEMBER, 01);
-    private Date endDate = new Date(2023, Calendar.JANUARY, 31);
-    private TTUnit[] MasterTable;
+    private Date startDate;
+    private Date endDate;
+    private TTUnit[] masterTable;
 
-    public TimeTable(TTUnit[] masterTable) {
-        MasterTable = masterTable;
+    public TimeTable() {
     }
 
 
+    public void initTT(Date start, Date end){
+
+
+        masterTable = new TTUnit[];
+    }
 
     public void initLecUnit(){
 
@@ -22,9 +26,9 @@ public class TimeTable {
     public void getNextDay(){
 
     }
-    // hallo
-    public void setLectureUnit(){
 
+    public void setLectureUnit(LectureUnit lecUnit, int pos, Date date){
+            masterTable[pos].setLecUnit(date, );
     }
 
     public void checkTT(){
