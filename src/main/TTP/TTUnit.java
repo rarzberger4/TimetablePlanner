@@ -1,20 +1,26 @@
 package TTP;
 
-import java.sql.Date;
+import java.time.LocalDate;
+import java.util.Date;
 
-public class TTUnit {
-    private Date date;
-    private LectureUnit[] lecUnit = new LectureUnit[2];
+public class TTUnit {           //each day is represented as TTUnit
+    private LocalDate date;
+    private LectureUnit[] lecUnits;
 
 
-    public TTUnit(Date date) {
-        this.date = date;
+    public TTUnit() {
     }
 
-    public void setLecUnit(LectureUnit unit){
-        unit.getLecturer();
-        unit.getUnitLength();
-        lecUnit[pos] = unit;
+    public void setLecUnit(LocalDate date, LectureUnit unit) {
+        if(unit.getUnitLength() == 1){
+            this.date = date;
+            this.lecUnits[0] = unit;        //TODO find a way to set the unit the right way
+        }
+
+    }
+
+    public LectureUnit[] getLecUnits() {
+        return lecUnits;
     }
 }
 
