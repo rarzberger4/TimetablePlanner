@@ -31,7 +31,7 @@ public class TimeTable {
 
     }
 
-    public void setLectureUnit(LectureUnit[] lecUnit, int pos,LocalDate date){
+    public void setLectureUnit(LectureUnit lecUnit, int pos,LocalDate date){      /// TODO: 20.12.2022 pos should be calculated from the date
         masterTable[pos].setLecUnit(date, lecUnit);
     }
 

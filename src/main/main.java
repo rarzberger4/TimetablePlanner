@@ -37,7 +37,7 @@ public class main {
         units2[1] = lu;
 
 
-        tt.setLectureUnit(units2, 0, lectureDate);
+        tt.setLectureUnit(lu, 0, lectureDate);
 
         tt.printTT();
     }

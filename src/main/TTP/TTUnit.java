@@ -11,9 +11,12 @@ public class TTUnit {           //each day is represented as TTUnit
     public TTUnit() {
     }
 
-    public void setLecUnit(LocalDate date, LectureUnit[] unit) {
-        this.date = date;
-        this.lecUnits = unit;
+    public void setLecUnit(LocalDate date, LectureUnit unit) {
+        if(unit.getUnitLength() == 1){
+            this.date = date;
+            this.lecUnits[0] = unit;        //TODO find a way to set the unit the right way
+        }
+
     }
 
     public LectureUnit[] getLecUnits() {
