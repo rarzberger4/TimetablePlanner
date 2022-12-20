@@ -2,9 +2,6 @@ package TTP;
 
 
 import java.time.LocalDate;
-import java.util.Calendar;
-import java.time.LocalTime;
-import java.util.Locale;
 
 public class TimeTable {
     private LocalDate startDate;
@@ -17,6 +14,11 @@ public class TimeTable {
 
     public void initTT(LocalDate start, LocalDate end){
         masterTable = new TTUnit[end.compareTo(start)];
+
+        for(int i = 0; i < masterTable.length; i++){
+            masterTable[i] = new TTUnit();
+        }
+
         System.out.println(end.compareTo(start));
     }
 
@@ -29,7 +31,8 @@ public class TimeTable {
 
     }
 
-    public void setLectureUnit(LectureUnit lecUnit, int pos, LocalDate date){
+    public void setLectureUnit(LectureUnit[] lecUnit, int pos,LocalDate date){
+        masterTable[pos].setLecUnit(date, lecUnit);
     }
 
     public void checkTT(){
@@ -38,6 +41,16 @@ public class TimeTable {
 
     public void getTimeTable(){
 
+    }
+
+    public void printTT(){
+
+        for(int i = 0; i < masterTable.length; i++){
+            for(int n = 0; n < 2; n++){
+                LectureUnit lecUnit = masterTable[i].getLecUnits()[n];
+                System.out.println(lecUnit.getName());
+            }
+        }
     }
 
 }
