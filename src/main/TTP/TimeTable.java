@@ -48,7 +48,8 @@ public class TimeTable {
         for(int i = 0; i < masterTable.length; i++){
             for(int n = 0; n < 2; n++){
                 LectureUnit lecUnit = masterTable[i].getLecUnits()[n];
-                System.out.println(lecUnit.getName());
+                System.out.println("lectureUnitName: "+lecUnit.getName());
+                System.out.println("lectureUnitLecturerName: "+lecUnit.getLecturer().getName());
             }
         }
     }
