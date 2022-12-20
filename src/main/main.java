@@ -1,16 +1,21 @@
 import TTP.TTUnit;
 import TTP.TimeTable;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Calendar;
-import java.util.Date;
+
 
 public class main {
     public static void main(String[] args) {
         System.out.println("Hello World");
 
-        TimeTable tt = new TimeTable(new TTUnit[5]);    //TTUnit[numberOfDays]
+        TimeTable tt = new TimeTable();    //TTUnit[numberOfDays]
 
-        new Date(2022, Calendar.SEPTEMBER, 01);
+        LocalDate startDate = LocalDate.of(2022,9,1);
+        LocalDate endDate = LocalDate.of(2022,9,30);
+
+        tt.initTT(startDate,endDate);
     }
 
 }
