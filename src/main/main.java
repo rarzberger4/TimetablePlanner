@@ -1,45 +1,58 @@
 import TTP.LectureUnit;
 import TTP.Lecturer;
-import TTP.TTUnit;
+import TTP.TimeTableError;
 import TTP.TimeTable;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
-import java.util.Calendar;
+import java.util.ArrayList;
+import java.util.List;
 
 
 public class main {
     public static void main(String[] args) {
-        System.out.println("Hello World");
-
-        TimeTable tt = new TimeTable();    //TTUnit[numberOfDays]
-
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2022,9,30);
+        List<LocalDate> holidays = new ArrayList<>();
 
-        tt.initTT(startDate,endDate);
+        TimeTable timeTable = new TimeTable(startDate, endDate, holidays);
+        Lecturer lecturer = new Lecturer("Albert Einstein");
 
-        LocalDate lectureDate = LocalDate.of(2022,9,1);
-        Lecturer lecturer = new Lecturer();
-        lecturer.setName("TestLecturer");
-        LectureUnit[] units2 = new LectureUnit[2];
+        // set day on which lecturer is not available
+        lecturer.setNotAvailable(LocalDate.of(2022,9,8));
+        // set new start date for lecture units
+        startDate = LocalDate.of(2022,9,7);
+        // set new end date for lecture units
+        endDate = LocalDate.of(2022,9,20);
 
-        for (LectureUnit x: units2) {
-            x = new LectureUnit();
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate);
+        try {
+            timeTable.setLectureUnit(lectureUnit_1);
+        } catch (TimeTableError e) {
+            e.printStackTrace();
         }
 
-        LectureUnit lu = new LectureUnit();
-        lu.setLecturer(lecturer);
-        lu.setName("Test69");
-        lu.setUnitLength(1);
+        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  2, lecturer, startDate, endDate);
+        try {
+            timeTable.setLectureUnit(lectureUnit_2);
+        } catch (TimeTableError e) {
+            e.printStackTrace();
+        }
 
-        units2[0] = lu;
-        units2[1] = lu;
+        LectureUnit lectureUnit_3 = new LectureUnit("Gacki Relativitätstheorie",  1, lecturer, startDate, endDate);
+        try {
+            timeTable.setLectureUnit(lectureUnit_3);
+        } catch (TimeTableError e) {
+            e.printStackTrace();
+        }
 
+        LectureUnit lectureUnit_4 = new LectureUnit("Lulu Relativitätstheorie",  1, lecturer, startDate, endDate);
+        try {
+            timeTable.setLectureUnit(lectureUnit_4);
+        } catch (TimeTableError e) {
+            e.printStackTrace();
+        }
 
-        tt.setLectureUnit(lu, 0, lectureDate);
-
-        tt.printTT();
+        timeTable.print();
     }
 
 }

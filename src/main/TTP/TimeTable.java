@@ -1,56 +1,33 @@
 package TTP;
 
-
 import java.time.LocalDate;
+import java.util.List;
 
 public class TimeTable {
-    private LocalDate startDate;
-    private LocalDate endDate;
-    private TTUnit[] masterTable;
+    private List<Day> masterTable;
 
-    public TimeTable() {
+    public TimeTable(LocalDate startDate, LocalDate endDate, List<LocalDate> holidays){
+        masterTable = Day.getBusinessDaysBetween(startDate, endDate, java.util.Optional.ofNullable(holidays));
     }
 
+    public void setLectureUnit(LectureUnit lecUnit) throws TimeTableError{
+        boolean success = false;
 
-    public void initTT(LocalDate start, LocalDate end){
-        masterTable = new TTUnit[end.compareTo(start)];
-
-        for(int i = 0; i < masterTable.length; i++){
-            masterTable[i] = new TTUnit();
+        for (Day day : this.masterTable) {
+            if (day.setLecUnit(lecUnit)) {
+                success = true;
+                break;
+            }
         }
 
-        System.out.println(end.compareTo(start));
+        if (!success) {
+            throw new TimeTableError("Could not set lecture unit \"" + lecUnit.getName() + "\" to timetable!");
+        }
     }
 
-    public void initLecUnit(){
-
-    }
-
-
-    public void getNextDay(){
-
-    }
-
-    public void setLectureUnit(LectureUnit lecUnit, int pos,LocalDate date){      /// TODO: 20.12.2022 pos should be calculated from the date
-        masterTable[pos].setLecUnit(date, lecUnit);
-    }
-
-    public void checkTT(){
-
-    }
-
-    public void getTimeTable(){
-
-    }
-
-    public void printTT(){
-
-        for(int i = 0; i < masterTable.length; i++){
-            for(int n = 0; n < 2; n++){
-                LectureUnit lecUnit = masterTable[i].getLecUnits()[n];
-                System.out.println("lectureUnitName: "+lecUnit.getName());
-                System.out.println("lectureUnitLecturerName: "+lecUnit.getLecturer().getName());
-            }
+    public void print(){
+        for(Day day : masterTable){
+            day.print();
         }
     }
 
