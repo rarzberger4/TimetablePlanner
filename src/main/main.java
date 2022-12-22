@@ -1,7 +1,7 @@
 import TTP.LectureUnit;
 import TTP.Lecturer;
-import TTP.TimeTableError;
 import TTP.TimeTable;
+import TTP.TimeTableError;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -9,6 +9,7 @@ import java.util.List;
 
 
 public class main {
+
     public static void main(String[] args) {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2022,9,30);
@@ -24,32 +25,24 @@ public class main {
         // set new end date for lecture units
         endDate = LocalDate.of(2022,9,20);
 
-        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate);
-        try {
-            timeTable.setLectureUnit(lectureUnit_1);
-        } catch (TimeTableError e) {
-            e.printStackTrace();
-        }
-
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  2, lecturer, startDate, endDate);
         LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  2, lecturer, startDate, endDate);
-        try {
-            timeTable.setLectureUnit(lectureUnit_2);
-        } catch (TimeTableError e) {
-            e.printStackTrace();
-        }
-
         LectureUnit lectureUnit_3 = new LectureUnit("Gacki Relativitätstheorie",  1, lecturer, startDate, endDate);
-        try {
-            timeTable.setLectureUnit(lectureUnit_3);
-        } catch (TimeTableError e) {
-            e.printStackTrace();
-        }
+        LectureUnit lectureUnit_4 = new LectureUnit("Lulu Relativitätstheorie",  2, lecturer, LocalDate.of(2022,9,20), LocalDate.of(2022,9,25));
+        timeTable.addLectureUnitToList(lectureUnit_1);
+        timeTable.addLectureUnitToList(lectureUnit_2);
+        timeTable.addLectureUnitToList(lectureUnit_3);
+        timeTable.addLectureUnitToList(lectureUnit_4);
 
-        LectureUnit lectureUnit_4 = new LectureUnit("Lulu Relativitätstheorie",  1, lecturer, startDate, endDate);
-        try {
-            timeTable.setLectureUnit(lectureUnit_4);
-        } catch (TimeTableError e) {
-            e.printStackTrace();
+        int i = 0;
+        while (i<5) {
+            try {
+                timeTable.solve();
+                break;
+            } catch (TimeTableError e) {
+                e.printStackTrace();
+            }
+            i++;
         }
 
         timeTable.print();

@@ -15,7 +15,6 @@ public class Day {
     final int lecturesPerDay = 2;
     private List<LectureUnit> lectureUnits = new ArrayList<>();
 
-
     public Day(LocalDate date) {
         this.date = date;
     }
@@ -50,6 +49,14 @@ public class Day {
         }
 
         return lecturesPerDay - sum; }
+
+    public void resetLectureUnits() {
+        this.lectureUnits.clear();
+    }
+
+    public List<LectureUnit> getLectureUnits() {
+        return lectureUnits;
+    }
 
     public void print() {
         System.out.println(date +  ": " + getDayStringNew(date, Locale.GERMAN));
