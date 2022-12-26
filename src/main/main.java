@@ -1,51 +1,48 @@
-import TTP.LectureUnit;
-import TTP.Lecturer;
-import TTP.TimeTable;
-import TTP.TimeTableError;
+import TTP.*;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class main {
 
     public static void main(String[] args) {
-        LocalDate startDate = LocalDate.of(2022,9,1);
-        LocalDate endDate = LocalDate.of(2022,9,30);
+        LocalDate startDate = LocalDate.of(2022, 9, 1);
+        LocalDate endDate = LocalDate.of(2022, 9, 30);
         List<LocalDate> holidays = new ArrayList<>();
 
         TimeTable timeTable = new TimeTable(startDate, endDate, holidays);
-        Lecturer lecturer = new Lecturer("Albert Einstein");
+        Lecturer Albert = new Lecturer("Albert Einstein");
+        Lecturer Kurt = new Lecturer("Kurt Gödel");
+        Group group1 = new Group();
+        Student student1 = new Student("student1");
+        group1.addStudentToList(student1);
+        Group group2 = new Group();
+        Student student2 = new Student("student2");
+        group2.addStudentToList(student2);
+        Group group3 = new Group();
+        group3.addStudentToList(student1);
+        group3.addStudentToList(student2);
 
         // set day on which lecturer is not available
-        lecturer.setNotAvailable(LocalDate.of(2022,9,8));
+        Albert.setNotAvailable(LocalDate.of(2022, 9, 8));
+        Kurt.setNotAvailable(LocalDate.of(2022, 9, 8));
         // set new start date for lecture units
-        startDate = LocalDate.of(2022,9,7);
+        startDate = LocalDate.of(2022, 9, 7);
         // set new end date for lecture units
-        endDate = LocalDate.of(2022,9,20);
+        endDate = LocalDate.of(2022, 9, 20);
 
-        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  2, lecturer, startDate, endDate);
-        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  2, lecturer, startDate, endDate);
-        LectureUnit lectureUnit_3 = new LectureUnit("Gacki Relativitätstheorie",  1, lecturer, startDate, endDate);
-        LectureUnit lectureUnit_4 = new LectureUnit("Lulu Relativitätstheorie",  2, lecturer, LocalDate.of(2022,9,20), LocalDate.of(2022,9,25));
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie", 1, Albert, startDate, endDate);
+        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie", 2, Albert, group2, startDate, endDate);
+        LectureUnit lectureUnit_3 = new LectureUnit("Gacki Relativitätstheorie", 1, Albert, group3, startDate, endDate);
+        LectureUnit lectureUnit_4 = new LectureUnit("Lulu Relativitätstheorie", 2, Kurt, group1, startDate, endDate);
         timeTable.addLectureUnitToList(lectureUnit_1);
         timeTable.addLectureUnitToList(lectureUnit_2);
         timeTable.addLectureUnitToList(lectureUnit_3);
         timeTable.addLectureUnitToList(lectureUnit_4);
 
-        int i = 0;
-        while (i<5) {
-            try {
-                timeTable.solve();
-                break;
-            } catch (TimeTableError e) {
-                e.printStackTrace();
-            }
-            i++;
-        }
 
+        timeTable.solve();
         timeTable.print();
     }
-
 }

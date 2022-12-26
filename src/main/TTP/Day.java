@@ -3,52 +3,59 @@ package TTP;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.format.TextStyle;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Optional;
+import java.util.*;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
 public class Day {
     private LocalDate date;
-    final int lecturesPerDay = 2;
-    private List<LectureUnit> lectureUnits = new ArrayList<>();
+    private int lectureUnitsPerDay = 2;
+    // private LectureUnit[][] lectureUnits = new LectureUnit[2][5];
+    private  List<LectureUnit> lectureUnits = new ArrayList<>();
 
     public Day(LocalDate date) {
         this.date = date;
     }
 
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public boolean setLecUnit(LectureUnit lectureUnit) {
-        if(checkConstraints(lectureUnit)){
-            lectureUnits.add(lectureUnit);
+    public boolean setLecUnit(LectureUnit newLectureUnit) {
+        if (checkConstraints(newLectureUnit)) {
+            lectureUnits.add(newLectureUnit);
             return true;
         } else {
             return false;
         }
     }
 
-    private boolean checkConstraints(LectureUnit lectureUnit) {
-        return lectureUnit.getUnitLength() <= this.getNumberOfFreeLecUnits()        // enough available space
-                && lectureUnit.getLecturer().checkAvailability(this.date)           // lecturer is available
-                && date.isAfter(lectureUnit.getFirstDate().minusDays(1))            // lecture start and end date is considered
-                && date.isBefore(lectureUnit.getLastDate().plusDays(1))
-                && !getDayStringNew(date, Locale.GERMAN).equals("Samstag")          // lecture is not on the weekend
-                && !getDayStringNew(date, Locale.GERMAN).equals("Sonntag");
+    private boolean checkConstraints(LectureUnit newLectureUnit) {
+        return newLectureUnit.getUnitLength() <= this.getNumberOfFreeLecUnits(newLectureUnit)
+                && date.isAfter(newLectureUnit.getFirstDate().minusDays(1))            // lecture start and end date is considered
+                && date.isBefore(newLectureUnit.getLastDate().plusDays(1))
+                && !Day.getDayStringNew(date, Locale.GERMAN).equals("Samstag")          // lecture is not on the weekend
+                && !Day.getDayStringNew(date, Locale.GERMAN).equals("Sonntag")
+                && newLectureUnit.getLecturer().checkAvailability(date);
     }
 
-    public int getNumberOfFreeLecUnits() {
+    private int getNumberOfFreeLecUnits(LectureUnit newLectureUnit) {
         int sum = 0;
 
         for (LectureUnit lectureUnit : lectureUnits) {
-            sum += lectureUnit.getUnitLength();
+            if (lectureUnit.getLecturer().equals(newLectureUnit.getLecturer())) {
+                sum += lectureUnit.getUnitLength();
+            } else {
+                if (Objects.nonNull(lectureUnit.getGroup())) {
+                    for (Student student : newLectureUnit.getGroup().getStudentsList()) {
+                        if (lectureUnit.getGroup().getStudentsList().contains(student)) {
+                            sum += lectureUnit.getUnitLength();
+                            break;
+                        }
+                    }
+                } else {
+                    sum += lectureUnit.getUnitLength();
+                }
+            }
         }
-
-        return lecturesPerDay - sum; }
+        return lectureUnitsPerDay - sum;
+    }
 
     public void resetLectureUnits() {
         this.lectureUnits.clear();
@@ -97,6 +104,8 @@ public class Day {
         DayOfWeek day = date.getDayOfWeek();
         return day.getDisplayName(TextStyle.FULL, locale);
     }
+
+    public LocalDate getDate() { return date; }
 
 }
 
