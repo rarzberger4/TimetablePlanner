@@ -88,6 +88,22 @@ class DayTest {
         assertFalse(day.setLecUnit(lectureUnit));
     }
 
+    @org.junit.jupiter.api.Test
+    void findConsecutiveOnes_1() {
+        int[] arr = {0,1,1,1,0,0,0,1,1,1,1,0,1,0,0,0,0};
+
+        int[] actual = Day.findConsecutiveOnes(arr);
+        assertEquals(4, actual[0]);
+    }
+
+    @org.junit.jupiter.api.Test
+    void findConsecutiveOnes_2() {
+        int[] arr = {0,1,1,1,0,0,0,1,1,1,1,0,1,0,0,0,0};
+
+        int[] actual = Day.findConsecutiveOnes(arr);
+        assertEquals(7, actual[1]);
+    }
+
 
 
 }

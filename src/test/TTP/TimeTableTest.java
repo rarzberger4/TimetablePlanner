@@ -6,6 +6,7 @@ import org.junit.jupiter.api.TestInstance;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -45,8 +46,8 @@ class TimeTableTest {
         timeTable.resetTimeTable();
 
         boolean check = true;
-        for (Day day : timeTable.getMasterTable()) {
-            if (day.getLectureUnits().size() != 0) {
+        for (DayNew day : timeTable.getMasterTable()) {
+            if (!day.isEmpty()) {
                 check = false;
                 break;
             }
@@ -61,10 +62,10 @@ class TimeTableTest {
         timeTable.addLectureUnitToList(lectureUnit1);
         timeTable.addLectureUnitToList(lectureUnit2);
         timeTable.solve();
-        timeTable.print();
-        Day day = timeTable.getDay(LocalDate.of(2022,9,6));
+        // timeTable.print();
+        DayNew day = timeTable.getDay(LocalDate.of(2022,9,6));
 
-        assertEquals(2, day.getLectureUnits().size());
+        assertEquals(4, day.size());
         timeTable.removeLectureUnitToList(lectureUnit1);
         timeTable.removeLectureUnitToList(lectureUnit2);
     }
@@ -77,10 +78,10 @@ class TimeTableTest {
         timeTable.addLectureUnitToList(lectureUnit2);
         timeTable.solve();
         // timeTable.print();
-        Day day1 = timeTable.getDay(LocalDate.of(2022,9,6));
-        Day day2 = timeTable.getDay(LocalDate.of(2022,9,7));
+        DayNew day1 = timeTable.getDay(LocalDate.of(2022,9,6));
+        DayNew day2 = timeTable.getDay(LocalDate.of(2022,9,7));
 
-        assertTrue(day1.getLectureUnits().size() == 1 && day2.getLectureUnits().size() == 1);
+        assertTrue(day1.size() == 2 && day2.size() == 1);
         timeTable.removeLectureUnitToList(lectureUnit1);
         timeTable.removeLectureUnitToList(lectureUnit2);
     }
@@ -93,10 +94,10 @@ class TimeTableTest {
         timeTable.addLectureUnitToList(lectureUnit2);
         timeTable.solve();
         // timeTable.print();
-        Day day1 = timeTable.getDay(LocalDate.of(2022,9,6));
-        Day day2 = timeTable.getDay(LocalDate.of(2022,9,7));
+        DayNew day1 = timeTable.getDay(LocalDate.of(2022,9,6));
+        DayNew day2 = timeTable.getDay(LocalDate.of(2022,9,7));
 
-        assertTrue(day1.getLectureUnits().size() == 1 && day2.getLectureUnits().size() == 1);
+        assertTrue(day1.size() == 2 && day2.size() == 2);
         timeTable.removeLectureUnitToList(lectureUnit1);
         timeTable.removeLectureUnitToList(lectureUnit2);
     }
@@ -105,16 +106,16 @@ class TimeTableTest {
     void superTest() {
         LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  1, Donald, group1, startDate, endDate);
         LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  1, Kurt, group2, startDate, endDate);
-        LectureUnit lectureUnit3 = new LectureUnit("Daisy",  1, Donald, group1, startDate, endDate);
+        LectureUnit lectureUnit3 = new LectureUnit("Daisy",  1, Donald, group3, startDate, endDate);
 
         timeTable.addLectureUnitToList(lectureUnit1);
         timeTable.addLectureUnitToList(lectureUnit2);
         timeTable.addLectureUnitToList(lectureUnit3);
         timeTable.solve();
-        timeTable.print();
-        Day day1 = timeTable.getDay(LocalDate.of(2022,9,6));
+        // timeTable.print();
+        DayNew day1 = timeTable.getDay(LocalDate.of(2022,9,6));
 
-        assertEquals(3, day1.getLectureUnits().size());
+        assertEquals(3, day1.size());
         timeTable.removeLectureUnitToList(lectureUnit1);
         timeTable.removeLectureUnitToList(lectureUnit2);
         timeTable.removeLectureUnitToList(lectureUnit3);
@@ -124,13 +125,17 @@ class TimeTableTest {
     void lecturerNotAvailable() {
         Kurt.setNotAvailable(LocalDate.of(2022,9,1));
         timeTable.solve();
-        Day day = timeTable.getDay(LocalDate.of(2022,9,1));
+        DayNew day = timeTable.getDay(LocalDate.of(2022,9,1));
 
         boolean check = true;
-        for(LectureUnit lectureUnit : day.getLectureUnits()){
-            if (lectureUnit.getLecturer().equals(Kurt)) {
-                check = false;
-                break;
+        for(LectureUnit[] lectureUnits : day.getLectureUnits()){
+            for (LectureUnit lectureUnit : lectureUnits) {
+                if (Objects.nonNull(lectureUnit)) {
+                    if (lectureUnit.getLecturer().equals(Kurt)) {
+                        check = false;
+                        break;
+                    }
+                }
             }
         }
         assertTrue(check);

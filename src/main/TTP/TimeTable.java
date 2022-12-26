@@ -6,42 +6,36 @@ import java.util.List;
 import java.util.Locale;
 
 public class TimeTable {
-    private final List<Day> masterTable;
+    private final List<DayNew> masterTable;
     private final List<LectureUnit> lectureUnits = new ArrayList<>();
 
     public TimeTable(LocalDate startDate, LocalDate endDate, List<LocalDate> holidays){
-        masterTable = Day.getBusinessDaysBetween(startDate, endDate, java.util.Optional.ofNullable(holidays));
+        masterTable = DayNew.getBusinessDaysBetween(startDate, endDate, java.util.Optional.ofNullable(holidays));
     }
 
-    public List<Day> getMasterTable() {
+    public List<DayNew> getMasterTable() {
         return this.masterTable;
     }
 
     public void resetTimeTable() {
-        for (Day day : this.masterTable) {
+        for (DayNew day : this.masterTable) {
             day.resetLectureUnits();
         }
     }
 
     public boolean setLectureUnit(LectureUnit lectureUnit) {
 
-        for (Day day : this.masterTable) {
-            if (day.getDate().isAfter(lectureUnit.getFirstDate().minusDays(1))            // lecture start and end date is considered
-                    && day.getDate().isBefore(lectureUnit.getLastDate().plusDays(1))
-                    && !Day.getDayStringNew(day.getDate(), Locale.GERMAN).equals("Samstag")          // lecture is not on the weekend
-                    && !Day.getDayStringNew(day.getDate(), Locale.GERMAN).equals("Sonntag")
-                    && lectureUnit.getLecturer().checkAvailability(day.getDate())) {
-                if (day.setLecUnit(lectureUnit)) {
-                    return true;
-                }
+        for (DayNew day : this.masterTable) {
+            if (day.setLecUnit(lectureUnit)) {
+                return true;
             }
         }
         return false;
     }
 
     public void print(){
-        for(Day day : masterTable){
-            if (!day.getLectureUnits().isEmpty()) {
+        for(DayNew day : masterTable){
+            if (!day.isEmpty()) {
                 day.print();
             }
         }
@@ -72,8 +66,8 @@ public class TimeTable {
         lectureUnits.add(lectureUnit);
     }
 
-    public Day getDay(LocalDate date) {
-        for (Day day : this.masterTable) {
+    public DayNew getDay(LocalDate date) {
+        for (DayNew day : this.masterTable) {
             if (date.equals(day.getDate())) {
                 return day;
             }

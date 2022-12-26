@@ -107,6 +107,29 @@ public class Day {
 
     public LocalDate getDate() { return date; }
 
+    public static int[] findConsecutiveOnes(int[] arr) {
+        int key = 1;
+        int count = 0;
+        int temp = 0;
+        int[] retVal = {0, 0};
+        int i;
+
+        for (int k = 0; k < arr.length; k++) {
+            i = arr[k];
+            if (i == key) {
+                count++;
+                if (retVal[0] < count) {
+                    retVal[0] = count;
+                    retVal[1] = temp;
+                }
+            } else {
+                count = 0;
+                temp = k+1;
+            }
+        }
+        return retVal;
+    }
+
 }
 
 
