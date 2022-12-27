@@ -1,34 +1,44 @@
 package TTP;
 
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
+
 public class LectureUnit {
     private String name;
     private int unitLength;
     private Lecturer lecturer;
+    private LocalDate firstDate;
+    private LocalDate lastDate;
+    private Group group = null;
 
-    public void setName(String name) {
+    public LectureUnit(String name, int unitLength, Lecturer lecturer, Group group, LocalDate firstDate, LocalDate lastDate) {
         this.name = name;
-    }
-
-    public void setUnitLength(int unitLength) {
         this.unitLength = unitLength;
-    }
-
-    public void setLecturer(Lecturer lecturer) {
         this.lecturer = lecturer;
+        this.firstDate = firstDate;
+        this.lastDate = lastDate;
+        this.group = group;
     }
 
-    public int getUnitLength() {
-        return unitLength;
+    public LectureUnit(String name, int unitLength, Lecturer lecturer, LocalDate firstDate, LocalDate lastDate) {
+        this.name = name;
+        this.unitLength = unitLength;
+        this.lecturer = lecturer;
+        this.firstDate = firstDate;
+        this.lastDate = lastDate;
     }
 
-    public Lecturer getLecturer() {
-        return lecturer;
-    }
+    public LocalDate getFirstDate() { return firstDate; }
 
+    public LocalDate getLastDate() { return lastDate; }
 
-    public String getName() {
-        return name;
-    }
+    public int getUnitLength() { return unitLength; }
 
+    public Lecturer getLecturer() { return lecturer; }
+
+    public String getName() { return name; }
+
+    public Group getGroup() { return group; }
 
 }
