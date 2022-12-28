@@ -47,7 +47,7 @@ class TimeTableTest {
 
         boolean check = true;
         for (DayNew day : timeTable.getMasterTable()) {
-            if (!day.isEmpty()) {
+            if (day.isNotEmpty()) {
                 check = false;
                 break;
             }
