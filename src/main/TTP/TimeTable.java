@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class TimeTable {
+public class TimeTable {        //
     private final List<DayNew> masterTable;
     private final List<LectureUnit> lectureUnits = new ArrayList<>();
 
