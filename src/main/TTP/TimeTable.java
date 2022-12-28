@@ -35,7 +35,7 @@ public class TimeTable {
 
     public void print(){
         for(DayNew day : masterTable){
-            if (!day.isEmpty()) {
+            if (day.isNotEmpty()) {
                 day.print();
             }
         }
