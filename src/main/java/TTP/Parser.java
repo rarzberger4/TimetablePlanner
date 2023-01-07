@@ -9,11 +9,20 @@ import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class Parser {
     private FileInputStream file;
     private Workbook workbook;
+    private Sheet sheet;
     private final String filepath = "test.xlsx";
+    private final Map<Integer, Lecturer> lecturerMap = new HashMap<>();
 
     public Parser() throws IOException {
         file = new FileInputStream(filepath);
@@ -22,22 +31,33 @@ public class Parser {
 
 
     public void parseXLS() {
-        Sheet sheet = workbook.getSheetAt(0);
+        sheet = workbook.getSheetAt(1);
+        parseLecturer();
+    }
+
+    private void parseLecturer(){
+        int id = 0;
         for (Row row : sheet) {
             for (Cell cell : row) {
-                switch (cell.getCellType()) {
+                    switch (cell.getCellType()) {
                     case STRING:
-                        System.out.println(cell.getRichStringCellValue().getString());
+                        lecturerMap.put(id, new Lecturer(cell.getRichStringCellValue().getString()));
                         break;
                     case NUMERIC:
+                        lecturerMap.get(id).setNotAvailable(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+
+
                         break;
                     case BOOLEAN:
                         break;
                     case FORMULA:
                         break;
-                    //default: data.get(new Integer(i)).add(" ");
+
+                    default: lecturerMap.get(id).setNotAvailable(LocalDate.of(1999, 9, 9));
                 }
+
             }
+            id++;
         }
     }
 }
