@@ -108,7 +108,7 @@ public class DayNew {
         return retVal;
     }
 
-    private boolean checkDayConstraints(LectureUnit newLectureUnit) {
+    private boolean checkDayConstraints(LectureUnit newLectureUnit) {                   //checks if lecturer is available in regard to defined constraints
         return date.isAfter(newLectureUnit.getFirstDate().minusDays(1))
                 && date.isBefore(newLectureUnit.getLastDate().plusDays(1))
                 && !DayNew.getDayStringNew(date, Locale.GERMAN).equals("Samstag")
@@ -143,10 +143,10 @@ public class DayNew {
         if (startDate == null || endDate == null) {
             throw new IllegalArgumentException("Invalid method argument(s) to countBusinessDaysBetween (" + startDate + "," + endDate + "," + holidays + ")");
         }
-        // Predicate 1: Is a given date is a holiday
+        // Predicate 1: If a given date is a holiday
         Predicate<LocalDate> isHoliday = date -> holidays.isPresent()
                 && holidays.get().contains(date);
-        // Predicate 2: Is a given date is a weekday
+        // Predicate 2: If a given date is a weekday
         Predicate<LocalDate> isWeekend = date -> date.getDayOfWeek() == DayOfWeek.SATURDAY
                 || date.getDayOfWeek() == DayOfWeek.SUNDAY;
         // Iterate over stream of all dates and check each day against any weekday or holiday
