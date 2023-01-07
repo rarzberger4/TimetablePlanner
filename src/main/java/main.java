@@ -1,13 +1,21 @@
 import TTP.*;
 
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
 public class main {
 
-    public static void main(String[] args) {
-        LocalDate startDate = LocalDate.of(2022, 9, 1);
+    public static void main(String[] args) throws IOException {
+
+
+        Parser parser = new Parser();
+        parser.parseXLS();
+
+
+
+        /*LocalDate startDate = LocalDate.of(2022, 9, 1);
         LocalDate endDate = LocalDate.of(2022, 9, 30);
         List<LocalDate> holidays = new ArrayList<>();
 
@@ -43,6 +51,6 @@ public class main {
 
 
         timeTable.solve();
-        timeTable.print();
+        timeTable.print();*/
     }
 }
