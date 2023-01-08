@@ -35,27 +35,19 @@ public class Parser {
         parseLecturer();
     }
 
-    private void parseLecturer(){
+    private void parseLecturer() {
         int id = 0;
         for (Row row : sheet) {
             for (Cell cell : row) {
                     switch (cell.getCellType()) {
                     case STRING:
-                        lecturerMap.put(id, new Lecturer(cell.getRichStringCellValue().getString()));
+                        if(!(cell.getRowIndex() == 0)) {
+                            lecturerMap.put(id, new Lecturer(cell.getRichStringCellValue().getString()));
+                        }
                         break;
                     case NUMERIC:
                         lecturerMap.get(id).setNotAvailable(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-
-
-                        break;
-                    case BOOLEAN:
-                        break;
-                    case FORMULA:
-                        break;
-
-                    default: lecturerMap.get(id).setNotAvailable(LocalDate.of(1999, 9, 9));
                 }
-
             }
             id++;
         }
