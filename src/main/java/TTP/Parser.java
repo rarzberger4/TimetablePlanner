@@ -31,11 +31,11 @@ public class Parser {
 
 
     public void parseXLS() {
-        sheet = workbook.getSheetAt(1);
         parseLecturer();
     }
 
     private void parseLecturer() {
+        sheet = workbook.getSheetAt(1);     //sheet number 2 in the excel file
         int id = 0;
         for (Row row : sheet) {
             for (Cell cell : row) {
