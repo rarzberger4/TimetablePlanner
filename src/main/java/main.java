@@ -21,7 +21,7 @@ public class main {
 
         TimeTable timeTable = new TimeTable(startDate, endDate, holidays);
         Lecturer Albert = new Lecturer("Albert Einstein");
-        Lecturer Kurt = new Lecturer("Kurt Gödel");
+        Lecturer Kurt = new Lecturer("Kurt Gï¿½del");
         Group group1 = new Group();
         Student student1 = new Student("student1");
         group1.addStudentToList(student1);
@@ -40,10 +40,10 @@ public class main {
         // set new end date for lecture units
         endDate = LocalDate.of(2022, 9, 20);
 
-        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie", 1, Albert, startDate, endDate);
-        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie", 2, Albert, group2, startDate, endDate);
-        LectureUnit lectureUnit_3 = new LectureUnit("Gacki Relativitätstheorie", 1, Albert, group3, startDate, endDate);
-        LectureUnit lectureUnit_4 = new LectureUnit("Lulu Relativitätstheorie", 2, Kurt, group3, startDate, endDate);
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitï¿½tstheorie", 1, Albert, startDate, endDate);
+        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitï¿½tstheorie", 2, Albert, group2, startDate, endDate);
+        LectureUnit lectureUnit_3 = new LectureUnit("Guenther Relativitï¿½tstheorie", 1, Albert, group3, startDate, endDate);
+        LectureUnit lectureUnit_4 = new LectureUnit("Martin Relativitï¿½tstheorie", 2, Kurt, group3, startDate, endDate);
         timeTable.addLectureUnitToList(lectureUnit_1);
         timeTable.addLectureUnitToList(lectureUnit_2);
         timeTable.addLectureUnitToList(lectureUnit_3);

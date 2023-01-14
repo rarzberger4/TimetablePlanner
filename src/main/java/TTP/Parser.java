@@ -22,7 +22,8 @@ public class Parser {
     private Workbook workbook;
     private Sheet sheet;
     private final String filepath = "test.xlsx";
-    private final Map<Integer, Lecturer> lecturerMap = new HashMap<>();
+    private final Map<String, Lecturer> lecturerMap = new HashMap<>();
+    private final Map<String, LectureUnit> lecturesMap = new HashMap<>();
 
     public Parser() throws IOException {
         file = new FileInputStream(filepath);
@@ -33,23 +34,35 @@ public class Parser {
     public void parseXLS() {
         sheet = workbook.getSheetAt(1);
         parseLecturer();
+        sheet = workbook.getSheetAt(3);
+        parseLectures();
     }
 
     private void parseLecturer() {
-        int id = 0;
+        String currentLecturer = null;
         for (Row row : sheet) {
             for (Cell cell : row) {
+
                     switch (cell.getCellType()) {
-                    case STRING:
-                        if(!(cell.getRowIndex() == 0)) {
-                            lecturerMap.put(id, new Lecturer(cell.getRichStringCellValue().getString()));
-                        }
-                        break;
-                    case NUMERIC:
-                        lecturerMap.get(id).setNotAvailable(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
-                }
+
+                        case STRING:
+                            if (!(cell.getRowIndex() == 0)) {       //ignore first row
+                                lecturerMap.put(cell.getRichStringCellValue().getString(), new Lecturer(cell.getRichStringCellValue().getString()));
+                                currentLecturer = cell.getRichStringCellValue().getString();
+                            }
+                            break;
+                        case NUMERIC:
+                            lecturerMap.get(currentLecturer).setNotAvailable(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                    }
             }
-            id++;
         }
     }
+
+    private void parseLectures(){
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                System.out.println(cell.toString());
+            }
+            }
+        }
 }
