@@ -20,7 +20,7 @@ public class Parser {
     private Sheet sheet;
     private final String filepath = "test.xlsx";
     private final Map<String, Lecturer> lecturerMap = new HashMap<>();
-
+    private List<LectureUnit> lectureUnitList = new ArrayList<>();
 
     public Parser() throws IOException {
         file = new FileInputStream(filepath);
@@ -29,13 +29,14 @@ public class Parser {
 
 
     public void parseXLS() {
-        sheet = workbook.getSheetAt(1);
-        parseLecturer();
-        sheet = workbook.getSheetAt(3);
-        parseLectures();
+        parseLecturer(1);
+        parseLectures(3);
     }
 
-    private void parseLecturer() {
+    private void parseLecturer(int sheetNr) {
+        sheet = workbook.getSheetAt(sheetNr);
+
+
         String currentLecturer = null;
         for (Row row : sheet) {
             for (Cell cell : row) {
@@ -55,7 +56,10 @@ public class Parser {
         }
     }
 
-    private void parseLectures() {
+    private void parseLectures(int sheetNr) {
+        sheet = workbook.getSheetAt(sheetNr);
+
+
         ArrayList<ArrayList<String>> data = new ArrayList<>();
         ArrayList<String> oneRow = null;
 
@@ -81,7 +85,7 @@ public class Parser {
 
         Group group = new Group();
 
-        List<LectureUnit> lectureUnitList = new ArrayList<>();
+
         lectureUnitList.add(new LectureUnit(data.get(1).get(0), 1, lecturerMap.get(data.get(1).get(6)), group, LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
 
 
