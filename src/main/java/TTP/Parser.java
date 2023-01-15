@@ -1,9 +1,6 @@
 package TTP;
 
-import org.apache.poi.ss.usermodel.Cell;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 import java.io.FileInputStream;
@@ -23,7 +20,7 @@ public class Parser {
     private Sheet sheet;
     private final String filepath = "test.xlsx";
     private final Map<String, Lecturer> lecturerMap = new HashMap<>();
-    private final Map<String, LectureUnit> lecturesMap = new HashMap<>();
+
 
     public Parser() throws IOException {
         file = new FileInputStream(filepath);
@@ -58,11 +55,35 @@ public class Parser {
         }
     }
 
-    private void parseLectures(){
+    private void parseLectures() {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
+        ArrayList<String> oneRow = null;
+
         for (Row row : sheet) {
+            oneRow = new ArrayList<>();
             for (Cell cell : row) {
-                System.out.println(cell.toString());
+                if(cell.getCellType() == CellType.STRING){
+                    oneRow.add(cell.getRichStringCellValue().getString());
+                } else if (cell.getCellType() == CellType.NUMERIC) {
+                    if(cell.getColumnIndex() < 6){
+                        oneRow.add(String.valueOf(cell.getNumericCellValue()));
+                    }else{
+                        oneRow.add(cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate().toString());
+                    }
+                }
             }
-            }
+            data.add(oneRow);
         }
+
+        for (ArrayList row:data) {
+            System.out.println(row.toString());
+        }
+
+        Group group = new Group();
+
+        List<LectureUnit> lectureUnitList = new ArrayList<>();
+        lectureUnitList.add(new LectureUnit(data.get(1).get(0), 1, lecturerMap.get(data.get(1).get(6)), group, LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
+
+
+    }
 }
