@@ -110,16 +110,26 @@ public class Parser {
         for(int i = 1; i < data.size()-1; i ++){      //first row is ignored
             int studentNum = students.size()/(int)Double.parseDouble(data.get(i).get(4));       //number of students per group      TODO: equally split number into n-group parts
 
-            for(int g = 1; g <= (int)Double.parseDouble(data.get(i).get(4)); g++){
-                System.out.println((int)Double.parseDouble(data.get(i).get(4)));
+            for(int g = 1; g <= (int)Double.parseDouble(data.get(i).get(4)); g++) {
+                System.out.println((int) Double.parseDouble(data.get(i).get(4)));
 
                 Group group = new Group();
 
-                for(int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++){
+                for (int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++) {
                     group.addStudentToList(new Student(students.get(x + studentNum * (g - 1))));
                 }
 
                 groups.add(group);
+
+                for (int l = 1; l <= (int)Double.parseDouble(data.get(i).get(2)); l++) {        //TODO: parse different lectureres for different groups
+                    lectureUnitList.add(new LectureUnit(
+                            data.get(i).get(0),
+                            (int) Double.parseDouble(data.get(i).get(3)),
+                            lecturerMap.get(data.get(i).get(6)),
+                            group,
+                            LocalDate.parse((data.get(i).get(7))),
+                            LocalDate.parse((data.get(i).get(8)))));
+                }
             }
         }
 
