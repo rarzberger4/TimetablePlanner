@@ -14,13 +14,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static java.lang.Integer.parseInt;
+
 public class Parser {
     private FileInputStream file;
     private Workbook workbook;
     private Sheet sheet;
     private final String filepath = "test.xlsx";
     private final Map<String, Lecturer> lecturerMap = new HashMap<>();
-    private List<LectureUnit> lectureUnitList = new ArrayList<>();
+    private ArrayList<LectureUnit> lectureUnitList = new ArrayList<>();
+    private ArrayList<String> students = new ArrayList<>();
 
     public Parser() throws IOException {
         file = new FileInputStream(filepath);
@@ -28,9 +31,26 @@ public class Parser {
     }
 
 
-    public void parseXLS() {
+    public void parseXLS() {                //order is important
         parseLecturer(1);
+        parseStudents(2);
         parseLectures(3);
+    }
+
+    public void fillTT(){
+
+    }
+
+    private void parseStudents(int sheetNr) {
+        sheet = workbook.getSheetAt(sheetNr);
+
+        for (Row row : sheet) {
+            for (Cell cell : row) {
+                if(cell.getCellType() == CellType.STRING){
+                    students.add(cell.getRichStringCellValue().getString());
+                }
+            }
+        }
     }
 
     private void parseLecturer(int sheetNr) {
@@ -83,10 +103,31 @@ public class Parser {
             System.out.println(row.toString());
         }
 
-        Group group = new Group();
+        ArrayList<Group> groups = new ArrayList<>();
+
+        //create groups and distribute students to the groups
+
+        for(int i = 1; i < data.size()-1; i ++){      //first row is ignored
+            int studentNum = students.size()/(int)Double.parseDouble(data.get(i).get(4));       //number of students per group      TODO: equally split number into n-group parts
+
+            for(int g = 1; g <= (int)Double.parseDouble(data.get(i).get(4)); g++){
+                System.out.println((int)Double.parseDouble(data.get(i).get(4)));
+
+                Group group = new Group();
+
+                for(int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++){
+                    group.addStudentToList(new Student(students.get(x + studentNum * (g - 1))));
+                }
+
+                groups.add(group);
+            }
+        }
+
+        //fill groups
 
 
-        lectureUnitList.add(new LectureUnit(data.get(1).get(0), 1, lecturerMap.get(data.get(1).get(6)), group, LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
+
+        lectureUnitList.add(new LectureUnit(data.get(1).get(0), (int)Double.parseDouble(data.get(1).get(3)), lecturerMap.get(data.get(1).get(6)), groups.get(0), LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
 
 
     }
