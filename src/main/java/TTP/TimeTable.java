@@ -41,6 +41,7 @@ public class TimeTable {        //
         }
     }
 
+
     public void solve() {
         resetTimeTable();
         int i = 0;

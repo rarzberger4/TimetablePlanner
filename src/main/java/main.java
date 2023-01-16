@@ -12,6 +12,9 @@ public class main {
 
         Parser parser = new Parser();
         parser.parseXLS();
+        TimeTable tt = parser.fillTT();
+        tt.solve();
+        tt.print();
 
 
 

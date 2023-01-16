@@ -1,5 +1,6 @@
 package TTP;
 
+import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
@@ -34,11 +35,28 @@ public class Parser {
     public void parseXLS() {                //order is important
         parseLecturer(1);
         parseStudents(2);
-        parseLectures(3);
+
+        for(int x = 3; x < workbook.getNumberOfSheets(); x++){      //Lectures start at 3
+            parseLectures(x);
+        }
+        //parseGeneral(0);
     }
 
-    public void fillTT(){
+    private void parseGeneral(int sheetNr) {
+        sheet = workbook.getSheetAt(sheetNr);
+    }
 
+    public TimeTable fillTT(){
+
+        LocalDate startDate = LocalDate.of(2022, 9, 1);
+        LocalDate endDate = LocalDate.of(2022, 12, 30);
+        List<LocalDate> holidays = new ArrayList<>();
+
+        TimeTable timeTable = new TimeTable(startDate,endDate,holidays);
+        for (LectureUnit lec:lectureUnitList) {
+                        timeTable.addLectureUnitToList(lec);
+        }
+        return timeTable;
     }
 
     private void parseStudents(int sheetNr) {
@@ -107,25 +125,27 @@ public class Parser {
 
         //create groups and distribute students to the groups
 
-        for(int i = 1; i < data.size()-1; i ++){      //first row is ignored
+        for(int i = 1; i < data.size(); i ++){      //first row is ignored, data.size() == rows in the xlsx
             int studentNum = students.size()/(int)Double.parseDouble(data.get(i).get(4));       //number of students per group      TODO: equally split number into n-group parts
 
-            for(int g = 1; g <= (int)Double.parseDouble(data.get(i).get(4)); g++) {
+            for(int g = 1; g <= (int)Double.parseDouble(data.get(i).get(4)); g++) {     //
                 System.out.println((int) Double.parseDouble(data.get(i).get(4)));
 
                 Group group = new Group();
 
-                for (int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++) {
+                for (int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++) {        //add equal number of students to the groups
                     group.addStudentToList(new Student(students.get(x + studentNum * (g - 1))));
                 }
 
                 groups.add(group);
 
-                for (int l = 1; l <= (int)Double.parseDouble(data.get(i).get(2)); l++) {        //TODO: parse different lectureres for different groups
+                String[] parts = data.get(i).get(6).split(", ");        //in case of multiple lecturers/groups
+
+                for (int l = 0; l < (int)Double.parseDouble(data.get(i).get(2)); l++) {     //add quantity of lectures to lectureUnitList
                     lectureUnitList.add(new LectureUnit(
                             data.get(i).get(0),
                             (int) Double.parseDouble(data.get(i).get(3)),
-                            lecturerMap.get(data.get(i).get(6)),
+                            lecturerMap.get(parts[g-1]),
                             group,
                             LocalDate.parse((data.get(i).get(7))),
                             LocalDate.parse((data.get(i).get(8)))));
@@ -133,11 +153,10 @@ public class Parser {
             }
         }
 
-        //fill groups
 
 
 
-        lectureUnitList.add(new LectureUnit(data.get(1).get(0), (int)Double.parseDouble(data.get(1).get(3)), lecturerMap.get(data.get(1).get(6)), groups.get(0), LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
+        //lectureUnitList.add(new LectureUnit(data.get(1).get(0), (int)Double.parseDouble(data.get(1).get(3)), lecturerMap.get(data.get(1).get(6)), groups.get(0), LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
 
 
     }
