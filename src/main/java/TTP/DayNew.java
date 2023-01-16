@@ -58,13 +58,14 @@ public class DayNew {
 
         int[] arr = findConsecutiveOnes(check);
         if (arr[0] >= newLectureUnit.getUnitLength()) {
-            int c = findNextEmptyColumn();
+            int c = findNextEmptyColumn();      //TODO: Returns -1 in some cases & creates exception 2 lines further
             for (int i = 0; i < newLectureUnit.getUnitLength(); i++) {
-                lectureUnits[arr[1]+i][c] = newLectureUnit;
+                if(c < 0){return false;}          //TODO: Review if Bugfix is really working correctly
+                lectureUnits[arr[1]+i][c] = newLectureUnit; //exception if c == -1
             }
             return true;
         } else {
-            return false;
+            return false;   //TODO: probably depricated after BugFix Line 61
         }
     }
 
