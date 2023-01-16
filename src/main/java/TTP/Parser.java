@@ -39,7 +39,7 @@ public class Parser {
         for(int x = 3; x < workbook.getNumberOfSheets(); x++){      //Lectures start at 3
             parseLectures(x);
         }
-        //parseGeneral(0);
+        //parseGeneral(0);      //TODO parse general Settings
     }
 
     private void parseGeneral(int sheetNr) {
