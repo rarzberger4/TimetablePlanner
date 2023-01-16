@@ -65,7 +65,7 @@ public class DayNew {
             }
             return true;
         } else {
-            return false;
+            return false;   //TODO: probably depricated after BugFix Line 61
         }
     }
 
