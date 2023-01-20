@@ -53,7 +53,7 @@ class DayTest {
         Day day = new Day(LocalDate.of(2023,1,16));
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2023,1,30);
-        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  5, Albert, startDate, endDate, false);
+        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  5, Albert, startDate, endDate, false, "VO");
 
         assertFalse(day.setLecUnit(lectureUnit));
     }
@@ -63,7 +63,7 @@ class DayTest {
         Day day = new Day(LocalDate.of(2023,1,16));
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2023,1,30);
-        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  1, Albert, startDate, endDate, false);
+        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  1, Albert, startDate, endDate, false, "VO");
 
         assertTrue(day.setLecUnit(lectureUnit));
     }
@@ -75,9 +75,9 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2023,1,30);
         Lecturer lecturer = new Lecturer("Albert Einstein");
-        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false);
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false, "VO");
         day.setLecUnit(lectureUnit_1);
-        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  2, lecturer, startDate, endDate, false);
+        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  2, lecturer, startDate, endDate, false, "VO");
         day.setLecUnit(lectureUnit_2);
 
         assertFalse(day.setLecUnit(lectureUnit_2));
@@ -90,7 +90,7 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2023,1,30);
         Lecturer lecturer = new Lecturer("Albert Einstein");
-        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false);
+        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false, "VO");
 
         assertFalse(day.setLecUnit(lectureUnit));
     }
@@ -103,7 +103,7 @@ class DayTest {
         LocalDate endDate = LocalDate.of(2023,1,30);
         Lecturer lecturer = new Lecturer("Albert Einstein");
         lecturer.setNotAvailable(day.getDate());
-        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false);
+        LectureUnit lectureUnit = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false, "VO");
 
         assertFalse(day.setLecUnit(lectureUnit));
     }
@@ -138,9 +138,9 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2023,1,30);
         Lecturer lecturer = new Lecturer("Albert Einstein");
-        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false);
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, false, "VO");
         day.setLecUnit(lectureUnit_1);
-        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  1, lecturer, startDate, endDate, true);
+        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  1, lecturer, startDate, endDate, true, "VO");
         day.setLecUnit(lectureUnit_2);
 
         assertEquals(1, day.getNumberOfAssignedLectures());
@@ -152,9 +152,9 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2023,1,30);
         Lecturer lecturer = new Lecturer("Albert Einstein");
-        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, true);
+        LectureUnit lectureUnit_1 = new LectureUnit("Relativitätstheorie",  1, lecturer, startDate, endDate, true, "VO");
         day.setLecUnit(lectureUnit_1);
-        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  1, lecturer, startDate, endDate, true);
+        LectureUnit lectureUnit_2 = new LectureUnit("Spezielle Relativitätstheorie",  1, lecturer, startDate, endDate, true, "VO");
         day.setLecUnit(lectureUnit_2);
 
         assertEquals(2, day.getNumberOfAssignedLectures());
@@ -166,8 +166,8 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2022,9,30);
 
-        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  2, Donald, group1, startDate, endDate, true);
-        LectureUnit lectureUnit2 = new LectureUnit("Zeichnen UE",  1, Donald, group2, startDate, endDate, true);
+        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  2, Donald, group1, startDate, endDate, true, "VO");
+        LectureUnit lectureUnit2 = new LectureUnit("Zeichnen UE",  1, Donald, group2, startDate, endDate, true, "VO");
         day.setLecUnit(lectureUnit1);
         day.setLecUnit(lectureUnit2);
 
@@ -180,8 +180,8 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2022,9,30);
 
-        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  2, Donald, group1, startDate, endDate, false);
-        LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  2, Kurt, group2, startDate, endDate, false);
+        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  2, Donald, group1, startDate, endDate, false, "VO");
+        LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  2, Kurt, group2, startDate, endDate, false, "VO");
         day.setLecUnit(lectureUnit1);
         day.setLecUnit(lectureUnit2);
 
@@ -194,9 +194,9 @@ class DayTest {
         LocalDate startDate = LocalDate.of(2022,9,1);
         LocalDate endDate = LocalDate.of(2022,9,30);
 
-        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  1, Donald, group1, startDate, endDate, false);
-        LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  1, Kurt, group2, startDate, endDate, false);
-        LectureUnit lectureUnit3 = new LectureUnit("Daisy",  1, Donald, group3, startDate, endDate, false);
+        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  1, Donald, group1, startDate, endDate, false, "VO");
+        LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  1, Kurt, group2, startDate, endDate, false, "VO");
+        LectureUnit lectureUnit3 = new LectureUnit("Daisy",  1, Donald, group3, startDate, endDate, false, "VO");
 
         day.setLecUnit(lectureUnit1);
         day.setLecUnit(lectureUnit2);

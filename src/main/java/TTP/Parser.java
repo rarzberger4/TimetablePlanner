@@ -20,11 +20,14 @@ public class Parser {
     private final ArrayList<String> students = new ArrayList<>();
     private LocalDate semesterStartDate;
     private LocalDate semesterEndDate;
-    private boolean isOnline;
 
     public Parser(String filepath) throws IOException {
         FileInputStream file = new FileInputStream(filepath);
         workbook = new XSSFWorkbook(file);
+    }
+
+    public int getLectureUnitListLength() {
+        return lectureUnitList.size();
     }
 
     public void parseXLS() {
@@ -136,7 +139,7 @@ public class Parser {
             String startDate = data.get(i).get(7);
             String endDate = data.get(i).get(8);
 
-            isOnline = lectureMode.equals("online");
+            boolean isOnline = lectureMode.equals("online");
 
             int studentNum = students.size()/(int)Double.parseDouble(numberOfGroups);       // number of students per group      TODO: equally split number into n-group parts
 
@@ -161,7 +164,7 @@ public class Parser {
                             lecturerMap.get(parts[g-1]),
                             group,
                             LocalDate.parse((startDate)),
-                            LocalDate.parse((endDate)), isOnline));
+                            LocalDate.parse((endDate)), isOnline, lectureType));
                 }
             }
         }

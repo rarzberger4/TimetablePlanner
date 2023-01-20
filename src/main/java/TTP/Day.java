@@ -168,6 +168,9 @@ public class Day {
                 if (option.equals("Lecturer")) {
                     str.append(lecture.getLecturer().getName()).append(" * ");
                 }
+                if (option.equals("Type")) {
+                    str.append(lecture.getType()).append(" * ");
+                }
             }
         }
 

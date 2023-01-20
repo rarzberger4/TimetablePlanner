@@ -8,12 +8,13 @@ public class LectureUnit {
     private final String name;
     private final int unitLength;
     private final Lecturer lecturer;
+    private final String type;
     private final LocalDate firstDate;
     private final LocalDate lastDate;
     private Group group = new Group();
     private final boolean isOnline;
 
-    public LectureUnit(String name, int unitLength, Lecturer lecturer, Group group, LocalDate firstDate, LocalDate lastDate, boolean isOnline) {
+    public LectureUnit(String name, int unitLength, Lecturer lecturer, Group group, LocalDate firstDate, LocalDate lastDate, boolean isOnline, String type) {
         this.name = name;
         this.unitLength = unitLength;
         this.lecturer = lecturer;
@@ -21,15 +22,17 @@ public class LectureUnit {
         this.lastDate = lastDate;
         this.group = group;
         this.isOnline = isOnline;
+        this.type = type;
     }
 
-    public LectureUnit(String name, int unitLength, Lecturer lecturer, LocalDate firstDate, LocalDate lastDate, boolean isOnline) {
+    public LectureUnit(String name, int unitLength, Lecturer lecturer, LocalDate firstDate, LocalDate lastDate, boolean isOnline, String type) {
         this.name = name;
         this.unitLength = unitLength;
         this.lecturer = lecturer;
         this.firstDate = firstDate;
         this.lastDate = lastDate;
         this.isOnline = isOnline;
+        this.type = type;
     }
 
     public LocalDate getFirstDate() { return firstDate; }
@@ -45,6 +48,8 @@ public class LectureUnit {
     public Group getGroup() { return group; }
 
     public boolean isOnline() { return isOnline; }
+
+    public String getType() { return type; }
 
     public String getMode() {
         if (isOnline) {

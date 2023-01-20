@@ -25,10 +25,10 @@ class TimeTableTest {
 
     @BeforeAll
     void beforeAll() {
-        timeTable.addLectureUnitToList(new LectureUnit("Relativitätstheorie",  1, Albert, startDate, endDate, false));
-        timeTable.addLectureUnitToList(new LectureUnit("Spezielle Relativitätstheorie",  2, Albert, startDate, endDate, false));
-        timeTable.addLectureUnitToList(new LectureUnit("Logik VO",  2, Kurt, startDate, endDate, false));
-        timeTable.addLectureUnitToList(new LectureUnit("Logik UE",  1, Kurt, startDate, endDate, false));
+        timeTable.addLectureUnitToList(new LectureUnit("Relativitätstheorie",  1, Albert, startDate, endDate, false, "VO"));
+        timeTable.addLectureUnitToList(new LectureUnit("Spezielle Relativitätstheorie",  2, Albert, startDate, endDate, false, "VO"));
+        timeTable.addLectureUnitToList(new LectureUnit("Logik VO",  2, Kurt, startDate, endDate, false, "VO"));
+        timeTable.addLectureUnitToList(new LectureUnit("Logik UE",  1, Kurt, startDate, endDate, false, "VO"));
 
         Student student1 = new Student("student1");
         group1.addStudentToList(student1);
@@ -61,8 +61,8 @@ class TimeTableTest {
 
     @org.junit.jupiter.api.Test
     void parallelDifferentGroupsWithOverlappingStudents() {
-        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  2, Donald, group1, startDate, endDate, false);
-        LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  2, Kurt, group3, startDate, endDate, false);
+        LectureUnit lectureUnit1 = new LectureUnit("Comics ILV",  2, Donald, group1, startDate, endDate, false, "VO");
+        LectureUnit lectureUnit2 = new LectureUnit("Essen UE",  2, Kurt, group3, startDate, endDate, false, "VO");
         timeTable.addLectureUnitToList(lectureUnit1);
         timeTable.addLectureUnitToList(lectureUnit2);
         timeTable.solve();
