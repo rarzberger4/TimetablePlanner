@@ -1,66 +1,72 @@
 package TTP;
 
-import org.apache.poi.ss.formula.functions.T;
 import org.apache.poi.ss.usermodel.*;
+import org.apache.poi.ss.util.CellReference;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static java.lang.Integer.parseInt;
-
 public class Parser {
-    private FileInputStream file;
-    private Workbook workbook;
+    private final Workbook workbook;
     private Sheet sheet;
-    private final String filepath = "test.xlsx";
     private final Map<String, Lecturer> lecturerMap = new HashMap<>();
-    private ArrayList<LectureUnit> lectureUnitList = new ArrayList<>();
-    private ArrayList<String> students = new ArrayList<>();
+    private final ArrayList<LectureUnit> lectureUnitList = new ArrayList<>();
+    private final ArrayList<String> students = new ArrayList<>();
+    private LocalDate semesterStartDate;
+    private LocalDate semesterEndDate;
+    private boolean isOnline;
 
-    public Parser() throws IOException {
-        file = new FileInputStream(filepath);
+    public Parser(String filepath) throws IOException {
+        FileInputStream file = new FileInputStream(filepath);
         workbook = new XSSFWorkbook(file);
     }
 
+    public void parseXLS() {
+        parseLecturer();
+        parseStudents();
+        parseGeneral();
 
-    public void parseXLS() {                //order is important
-        parseLecturer(1);
-        parseStudents(2);
-
-        for(int x = 3; x < workbook.getNumberOfSheets(); x++){      //Lectures start at 3
+        for(int x = 3; x < workbook.getNumberOfSheets(); x++){      // Lectures start at 3
             parseLectures(x);
         }
-        //parseGeneral(0);      //TODO parse general Settings
+
     }
 
-    private void parseGeneral(int sheetNr) {
-        sheet = workbook.getSheetAt(sheetNr);
+    private void parseGeneral() {
+        sheet = workbook.getSheet("General");
+
+        CellReference cellReference = new CellReference("A2");
+        Row row = sheet.getRow(cellReference.getRow());
+        Cell cell = row.getCell(cellReference.getCol());
+        semesterStartDate = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        cellReference = new CellReference("B2");
+        row = sheet.getRow(cellReference.getRow());
+        cell = row.getCell(cellReference.getCol());
+        semesterEndDate = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+
+        // ToDO: parse holidays
+
     }
 
     public TimeTable fillTT(){
-
-        LocalDate startDate = LocalDate.of(2022, 9, 1);
-        LocalDate endDate = LocalDate.of(2022, 12, 30);
         List<LocalDate> holidays = new ArrayList<>();
 
-        TimeTable timeTable = new TimeTable(startDate,endDate,holidays);
+        TimeTable timeTable = new TimeTable(semesterStartDate,semesterEndDate,holidays);
         for (LectureUnit lec:lectureUnitList) {
-                        timeTable.addLectureUnitToList(lec);
+            timeTable.addLectureUnitToList(lec);
         }
         return timeTable;
     }
 
-    private void parseStudents(int sheetNr) {
-        sheet = workbook.getSheetAt(sheetNr);
+    private void parseStudents( ) {
+        sheet = workbook.getSheet("Students");
 
         for (Row row : sheet) {
             for (Cell cell : row) {
@@ -71,9 +77,8 @@ public class Parser {
         }
     }
 
-    private void parseLecturer(int sheetNr) {
-        sheet = workbook.getSheetAt(sheetNr);
-
+    private void parseLecturer() {
+        sheet = workbook.getSheet("Lecturers");
 
         String currentLecturer = null;
         for (Row row : sheet) {
@@ -82,7 +87,7 @@ public class Parser {
                     switch (cell.getCellType()) {
 
                         case STRING:
-                            if (!(cell.getRowIndex() == 0)) {       //ignore first row
+                            if (!(cell.getRowIndex() == 0)) {       // ignore first row
                                 lecturerMap.put(cell.getRichStringCellValue().getString(), new Lecturer(cell.getRichStringCellValue().getString()));
                                 currentLecturer = cell.getRichStringCellValue().getString();
                             }
@@ -97,9 +102,8 @@ public class Parser {
     private void parseLectures(int sheetNr) {
         sheet = workbook.getSheetAt(sheetNr);
 
-
         ArrayList<ArrayList<String>> data = new ArrayList<>();
-        ArrayList<String> oneRow = null;
+        ArrayList<String> oneRow;
 
         for (Row row : sheet) {
             oneRow = new ArrayList<>();
@@ -117,47 +121,50 @@ public class Parser {
             data.add(oneRow);
         }
 
-        for (ArrayList row:data) {
-            System.out.println(row.toString());
-        }
-
         ArrayList<Group> groups = new ArrayList<>();
 
-        //create groups and distribute students to the groups
+        // create groups and distribute students to the groups
 
-        for(int i = 1; i < data.size(); i ++){      //first row is ignored, data.size() == rows in the xlsx
-            int studentNum = students.size()/(int)Double.parseDouble(data.get(i).get(4));       //number of students per group      TODO: equally split number into n-group parts
+        for(int i = 1; i < data.size(); i ++){      // first row is ignored, data.size() == rows in the xlsx
+            String lectureName = data.get(i).get(0);
+            String lectureType = data.get(i).get(1);
+            String quantity = data.get(i).get(2);
+            String units = data.get(i).get(3);
+            String numberOfGroups = data.get(i).get(4);
+            String lectureMode = data.get(i).get(5);
+            String lecturer = data.get(i).get(6);
+            String startDate = data.get(i).get(7);
+            String endDate = data.get(i).get(8);
 
-            for(int g = 1; g <= (int)Double.parseDouble(data.get(i).get(4)); g++) {     //
-                System.out.println((int) Double.parseDouble(data.get(i).get(4)));
+            isOnline = lectureMode.equals("online");
+
+            int studentNum = students.size()/(int)Double.parseDouble(numberOfGroups);       // number of students per group      TODO: equally split number into n-group parts
+
+            for(int g = 1; g <= (int)Double.parseDouble(numberOfGroups); g++) {     //
+                // System.out.println((int) Double.parseDouble(numberOfGroups);
 
                 Group group = new Group();
+                group.setName(g + "/" + (int) Double.parseDouble(numberOfGroups));
 
-                for (int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++) {        //add equal number of students to the groups
+                for (int x = 0; x < studentNum && ((x + studentNum * (g - 1) < students.size())); x++) {        // add equal number of students to the groups
                     group.addStudentToList(new Student(students.get(x + studentNum * (g - 1))));
                 }
 
                 groups.add(group);
 
-                String[] parts = data.get(i).get(6).split(", ");        //in case of multiple lecturers/groups
+                String[] parts = lecturer.split(", ");        // in case of multiple lecturers/groups
 
-                for (int l = 0; l < (int)Double.parseDouble(data.get(i).get(2)); l++) {     //add quantity of lectures to lectureUnitList
+                for (int l = 0; l < (int)Double.parseDouble(quantity); l++) {     // add quantity of lectures to lectureUnitList
                     lectureUnitList.add(new LectureUnit(
-                            data.get(i).get(0),
-                            (int) Double.parseDouble(data.get(i).get(3)),
+                            lectureName,
+                            (int) Double.parseDouble(units),
                             lecturerMap.get(parts[g-1]),
                             group,
-                            LocalDate.parse((data.get(i).get(7))),
-                            LocalDate.parse((data.get(i).get(8)))));
+                            LocalDate.parse((startDate)),
+                            LocalDate.parse((endDate)), isOnline));
                 }
             }
         }
-
-
-
-
-        //lectureUnitList.add(new LectureUnit(data.get(1).get(0), (int)Double.parseDouble(data.get(1).get(3)), lecturerMap.get(data.get(1).get(6)), groups.get(0), LocalDate.parse((data.get(1).get(7))), LocalDate.parse((data.get(1).get(8)))));
-
 
     }
 }

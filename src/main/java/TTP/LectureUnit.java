@@ -5,28 +5,31 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LectureUnit {
-    private String name;
-    private int unitLength;
-    private Lecturer lecturer;
-    private LocalDate firstDate;
-    private LocalDate lastDate;
-    private Group group = null;
+    private final String name;
+    private final int unitLength;
+    private final Lecturer lecturer;
+    private final LocalDate firstDate;
+    private final LocalDate lastDate;
+    private Group group = new Group();
+    private final boolean isOnline;
 
-    public LectureUnit(String name, int unitLength, Lecturer lecturer, Group group, LocalDate firstDate, LocalDate lastDate) {
+    public LectureUnit(String name, int unitLength, Lecturer lecturer, Group group, LocalDate firstDate, LocalDate lastDate, boolean isOnline) {
         this.name = name;
         this.unitLength = unitLength;
         this.lecturer = lecturer;
         this.firstDate = firstDate;
         this.lastDate = lastDate;
         this.group = group;
+        this.isOnline = isOnline;
     }
 
-    public LectureUnit(String name, int unitLength, Lecturer lecturer, LocalDate firstDate, LocalDate lastDate) {
+    public LectureUnit(String name, int unitLength, Lecturer lecturer, LocalDate firstDate, LocalDate lastDate, boolean isOnline) {
         this.name = name;
         this.unitLength = unitLength;
         this.lecturer = lecturer;
         this.firstDate = firstDate;
         this.lastDate = lastDate;
+        this.isOnline = isOnline;
     }
 
     public LocalDate getFirstDate() { return firstDate; }
@@ -40,5 +43,15 @@ public class LectureUnit {
     public String getName() { return name; }
 
     public Group getGroup() { return group; }
+
+    public boolean isOnline() { return isOnline; }
+
+    public String getMode() {
+        if (isOnline) {
+            return "online";
+        } else {
+            return "on-site";
+        }
+    }
 
 }

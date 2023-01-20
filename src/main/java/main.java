@@ -1,6 +1,7 @@
 import TTP.*;
 
 import java.io.IOException;
+import java.sql.Time;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,16 +10,15 @@ public class main {
 
     public static void main(String[] args) throws IOException {
 
-
-        Parser parser = new Parser();
+        String filepath = "test.xlsx";
+        Parser parser = new Parser(filepath);
         parser.parseXLS();
         TimeTable tt = parser.fillTT();
         tt.solve();
         tt.print();
+        tt.exportTimeTable("export.xlsx");
 
-
-
-        /*LocalDate startDate = LocalDate.of(2022, 9, 1);
+        /* LocalDate startDate = LocalDate.of(2022, 9, 1);
         LocalDate endDate = LocalDate.of(2022, 9, 30);
         List<LocalDate> holidays = new ArrayList<>();
 
@@ -52,8 +52,8 @@ public class main {
         timeTable.addLectureUnitToList(lectureUnit_3);
         timeTable.addLectureUnitToList(lectureUnit_4);
 
-
         timeTable.solve();
         timeTable.print();*/
+
     }
 }
