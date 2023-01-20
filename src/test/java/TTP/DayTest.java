@@ -112,7 +112,7 @@ class DayTest {
     void findConsecutiveOnes_1() {
         int[] arr = {0,1,1,1,0,0,0,1,1,1,1,0,1,0,0,0,0};
 
-        int[] actual = DayOld.findConsecutiveOnes(arr);
+        int[] actual = Day.findConsecutiveOnes(arr);
         assertEquals(4, actual[0]);
     }
 
@@ -120,7 +120,7 @@ class DayTest {
     void findConsecutiveOnes_2() {
         int[] arr = {0,1,1,1,0,0,0,1,1,1,1,0,1,0,0,0,0};
 
-        int[] actual = DayOld.findConsecutiveOnes(arr);
+        int[] actual = Day.findConsecutiveOnes(arr);
         assertEquals(7, actual[1]);
     }
 
@@ -128,7 +128,7 @@ class DayTest {
     void findConsecutiveOnes_3() {
         int[] arr = {0,0,0,0,1,1,1,1};
 
-        int[] actual = DayOld.findConsecutiveOnes(arr);
+        int[] actual = Day.findConsecutiveOnes(arr);
         assertEquals(4, actual[1]);
     }
 
