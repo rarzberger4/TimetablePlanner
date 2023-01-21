@@ -34,8 +34,10 @@ public class Day {
                     return false;
                 } else {
                     for (Student student : lectureUnits[i][j].getGroup().getStudentsList()) {
-                        if (group.getStudentsList().contains(student)) {
-                            return false;
+                        for (Student stud : group.getStudentsList()) {
+                            if (stud.getName().equals(student.getName())) {
+                                return false;
+                            }
                         }
                     }
                 }
