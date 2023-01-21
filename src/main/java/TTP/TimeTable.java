@@ -57,10 +57,12 @@ public class TimeTable {        //
 
     public void solve() {
         resetTimeTable();
+
         Collections.shuffle(lectureUnits);
         hashCodes.add(lectureUnits.hashCode());
         int i = 0;
         int k = 0;
+        int count = 0;
         while (i<1000000) {
             try {
                 for (LectureUnit lectureUnit : this.lectureUnits) {
@@ -75,6 +77,7 @@ public class TimeTable {        //
                             k++;
                         }
 
+                        System.out.println(count++);
                         this.resetTimeTable();
                         throw new TimeTableError("Could not set lecture: \"" + lectureUnit.getName() + "\"");
                     }
