@@ -74,11 +74,9 @@ public class TimeTable {        //
                             System.out.println(lectureUnit.getName() + " runs in cycles");
                             k++;
                         }
-
                         this.resetTimeTable();
-                        throw new TimeTableError("Could not set lecture: \"" + lectureUnit.getName() + "\"");
-                    }
-                }
+                        throw new TimeTableError("Could not set lecture:" + lectureUnit.getName()+"\n");
+                }   }
                 System.out.println("Number of failed executions: " + i);
                 break;
             } catch (TimeTableError e) {

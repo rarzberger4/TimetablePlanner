@@ -20,6 +20,7 @@ public class Parser {
     private final ArrayList<String> students = new ArrayList<>();
     private LocalDate semesterStartDate;
     private LocalDate semesterEndDate;
+    List<LocalDate> holidays = new ArrayList<>();
 
     public Parser(String filepath) throws IOException {
         FileInputStream file = new FileInputStream(filepath);
@@ -55,11 +56,22 @@ public class Parser {
         semesterEndDate = cell.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
 
         // ToDO: parse holidays
+        List<Double> values = new ArrayList<Double>();
+        for(Row r : sheet) {
+            Cell c = r.getCell(2);
+            if(c != null) {
+                if(c.getCellType() == CellType.NUMERIC) {
+                    holidays.add(c.getDateCellValue().toInstant().atZone(ZoneId.systemDefault()).toLocalDate());
+                }
+            }
+        }
+
+
 
     }
 
     public TimeTable fillTT(){
-        List<LocalDate> holidays = new ArrayList<>();
+
 
         TimeTable timeTable = new TimeTable(semesterStartDate,semesterEndDate,holidays);
         for (LectureUnit lec:lectureUnitList) {
