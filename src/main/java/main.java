@@ -21,7 +21,6 @@ public class main {
             System.out.println("Not all lectures were successfully assigned!");
         }
 
-        // ToDo mehrere Lecture Units in Excel eintragen
         // ToDo Kommentare einfügen
         // ToDo holidays werden noch nicht eingelesen
         // ToDo split von den Studenten in die Gruppen sauber
