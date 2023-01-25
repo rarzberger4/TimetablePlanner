@@ -59,4 +59,6 @@ public class LectureUnit {
         }
     }
 
+    public String getString() { return name + " | " + group.getName() + " | " + this.getMode() + " | " + lecturer.getName() + " | " + type; }
+
 }

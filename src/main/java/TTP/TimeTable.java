@@ -189,5 +189,16 @@ public class TimeTable {        //
         }
     }
 
+    public void exportTimeTableICS(String s) throws IOException {
+        Calender calender = new Calender();
+
+        for (Day day: masterTable) {
+            if (day.getNumberOfAssignedLectures() > 0) {
+                calender.addDay(day);
+            }
+        }
+        calender.export(s);
+    }
+
 
 }

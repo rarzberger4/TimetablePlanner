@@ -6,13 +6,13 @@ import java.io.IOException;
 public class main {
 
     public static void main(String[] args) throws IOException {
-
         String filepath = "test.xlsx";
         Parser parser = new Parser(filepath);
         parser.parseXLS();
         TimeTable tt = parser.fillTT();
         tt.solve();
         // tt.print();
+        tt.exportTimeTableICS("timetable.ics");
         tt.exportTimeTable("export.xlsx");
 
         if (parser.getLectureUnitListLength() == tt.getNumberOfAssignedLectures()) {

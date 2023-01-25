@@ -115,6 +115,7 @@ public class Day {
     private boolean checkDayConstraints(LectureUnit newLectureUnit) {                   //checks if lecturer is available in regard to defined constraints
         return date.isAfter(newLectureUnit.getFirstDate().minusDays(1))
                 && date.isBefore(newLectureUnit.getLastDate().plusDays(1))
+                // && !Day.getDayStringNew(date, Locale.GERMAN).equals("Freitag")
                 && !Day.getDayStringNew(date, Locale.GERMAN).equals("Samstag")
                 && !Day.getDayStringNew(date, Locale.GERMAN).equals("Sonntag")
                 && newLectureUnit.getLecturer().checkAvailability(date)
@@ -153,7 +154,7 @@ public class Day {
     }
 
     public String getString(int slot, String option) {
-        LectureUnit[] lectures = getAssignedLectures(slot);
+        ArrayList<LectureUnit> lectures = getAssignedLectures(slot);
         StringBuilder str = new StringBuilder();
 
         for (LectureUnit lecture : lectures) {
@@ -259,12 +260,12 @@ public class Day {
         return sum;
     }
 
-    public LectureUnit[] getAssignedLectures(int slot) {
-        LectureUnit[] lectures = new LectureUnit[6];
+    public ArrayList<LectureUnit> getAssignedLectures(int slot) {
+        ArrayList<LectureUnit> lectures = new ArrayList<>();
 
         for (int col = 0; col < lectureUnits[slot].length; col++) {
             if (Objects.nonNull(lectureUnits[slot][col])) {
-                lectures[col] = lectureUnits[slot][col];
+                lectures.add(lectureUnits[slot][col]);
             }
         }
         return lectures;
